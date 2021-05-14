@@ -4,43 +4,43 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
+
 import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 public class CSVReader_readAddressBook {
 	
 private static final String path = "C:\\Users\\Varsha Manwal\\Desktop\\BridgeLabz\\Fellowship\\Day28_FileRead_Write\\annotationsAndthirdpartylibrary\\Data\\AddressBook.csv";
     
 	
-	@SuppressWarnings("unused")
-	public static void readData() throws IOException {
+	
+	public  void readDatafromCSV() throws IOException {
 		
 		Reader reader = Files.newBufferedReader(Paths.get(path));
 	
-		@SuppressWarnings("resource")
-		CSVReader csvReader = new CSVReader(reader);
-		String [] nextData;
-		
-		while((nextData=csvReader.readNext()) != null) {
-			
-			System.out.println("Firstname: "+ nextData[0]);
-			System.out.println("Lastname: "+ nextData[1]);
-			System.out.println("Address: "+ nextData[2]);
-			System.out.println("City: "+ nextData[3]);
-			System.out.println("State: "+ nextData[4]);
-			System.out.println("ZipCode: "+ nextData[5]);
-			System.out.println("PhoneNumber: "+ nextData[6]);
-			System.out.println("EmailId: "+ nextData[7]);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		CsvToBean <Person> csvToBean = new CsvToBeanBuilder(reader)
+		                             .withType(Person.class)
+		                             .withIgnoreLeadingWhiteSpace(true)
+		                             .build();
+		Iterator <Person> personIterator = csvToBean.iterator();
+
+        while (personIterator.hasNext()) {
+        	Person person = personIterator.next();
+			System.out.println("Firstname: "+ person.getFirstname());
+			System.out.println("Lastname: "+ person.getLastname());
+			System.out.println("Address: "+ person.getAddress());
+			System.out.println("City: "+ person.getCity());
+			System.out.println("State: "+ person.getState());
+			System.out.println("ZipCode: "+ person.getZip());
+			System.out.println("PhoneNumber: "+ person.getphoneNumber());
+			System.out.println("EmailId: "+ person.getemail());
 			System.out.println("------------------------------------\n");
 			
-		}
+		}	
 		
-		if(nextData != null) {
-			   csvReader.close();
-		}
 	}
 	
-	public static void main(String[] args) throws IOException {
-		readData();
-	}
-
 }
